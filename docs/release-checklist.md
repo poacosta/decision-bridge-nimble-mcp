@@ -10,7 +10,7 @@ Reported as separate states. Nothing below has been pushed, published, or releas
 | Local validation | 2026-09-30, macOS arm64: `ruff` and `mypy` clean; 288 default tests (unit, integration, real-subprocess MCP protocol) pass on Python 3.11.14, 3.12.3, and 3.13.12; 5 packaging tests pass (wheel and sdist contents/metadata, installed-wheel MCP round trip, Git-less sdist, ZIP-style copy in a path with spaces) on 3.12; `uv tool install .` verified in isolated directories |
 | Cross-platform validation | **macOS only** so far. Linux and Windows are covered by the CI matrix definition but have not been run |
 | Live-model validation | Run once on 2026-09-30: macOS, Ollama 0.35.0, `nimble:latest` digest `24e550a16a7081881be2f1f0d91e8cc13a597472735c04119f035a0a85c67e0c` (see `docs/evaluation.md`) |
-| MCP client validation | Official SDK client only; Codex, Claude Desktop, Cursor untested ([clients](clients.md)) |
+| MCP client validation | Official SDK client end to end. Claude Code: registered and its health check reports connected. Codex: registered, not connected end to end. Claude Desktop, Cursor, Antigravity: untested. No tool call from a live agent session yet ([clients](clients.md)) |
 | Publication | Not published; not authorized |
 
 ## Blocking decisions (owner)

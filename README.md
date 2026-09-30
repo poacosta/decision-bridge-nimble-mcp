@@ -56,7 +56,7 @@ Works today, before any registry release.
 
    > Use Decision Bridge to classify the supplied request into one of the provided categories. Return the selected category and probabilities. Do not execute the selected action.
 
-Other install routes (development checkout, local wheel, pip, Windows notes): [docs/installation.md](docs/installation.md).
+Other install routes (development checkout, local wheel, pip, Windows notes): [docs/installation.md](docs/installation.md). A step-by-step guide to installing, connecting, and using it from an agent or the command line: [docs/usage.md](docs/usage.md).
 
 ## Example
 
@@ -146,7 +146,7 @@ Probabilities, scores, and `confidence` are passed through exactly as Ollama ret
 
 ## Connecting a client
 
-[docs/clients.md](docs/clients.md) has a generic stdio configuration plus setup notes for Codex, Claude Desktop, and Cursor, with an honest tested/untested table. Installing this package never edits any client's configuration.
+[docs/clients.md](docs/clients.md) has a generic stdio configuration plus setup notes for Claude Code, Codex, Claude Desktop, Cursor, and Antigravity, with an honest tested/untested table. Installing this package never edits any client's configuration.
 
 ## Configuration and diagnostics
 

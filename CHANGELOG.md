@@ -12,4 +12,5 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Not yet released
 - Strict input validation (including duplicate JSON keys), exact 64 KiB request-size enforcement, and full validation of upstream responses against the submitted questions.
 - Bounded concurrency and queue, one total deadline, cancellation, and stable error codes.
 - Environment/CLI configuration with loopback-only default and local-model enforcement.
+- Usage guide (`docs/usage.md`) and client setup for Claude Code, Codex, Claude Desktop, Cursor, and Antigravity.
 - Deterministic, protocol (real subprocess), packaging, and opt-in live tests; a small evaluation script.
