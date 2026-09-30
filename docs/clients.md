@@ -4,6 +4,27 @@ An MCP client starts `decision-bridge serve`; the bridge connects to Ollama; Oll
 
 Find your executable's absolute path first ([installation](installation.md#finding-the-executable)) and run `decision-bridge doctor` before configuring a client. Nothing here is done for you: installing the package never edits client configuration.
 
+## How the connection works
+
+```mermaid
+sequenceDiagram
+    participant C as MCP client
+    participant B as decision-bridge serve
+    participant O as Ollama
+    C->>B: start the process (command and args from your config)
+    C->>B: initialize
+    B-->>C: capabilities (works even if Ollama is offline)
+    C->>B: tools/list
+    B-->>C: decide, bridge_status
+    Note over B,O: initialize and tools/list never contact Ollama
+    C->>B: tools/call decide
+    B->>O: POST /v1/systemone
+    O-->>B: answers
+    B-->>C: structured result
+    C->>B: close stdin
+    B-->>C: exit code 0
+```
+
 ## Status
 
 | Client | Status | Notes |

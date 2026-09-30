@@ -4,9 +4,20 @@ A practical guide: install it, connect it to your agent, and use it from an agen
 
 ## The mental model
 
-```text
-your agent (Claude Code, Codex, ...)  --calls tool "decide"-->  decision-bridge  -->  Ollama  -->  Nimble
-        you decide when to call it          validates in/out        local model
+```mermaid
+sequenceDiagram
+    actor You
+    participant Agent as Your agent<br/>(Claude Code, Codex, ...)
+    participant Bridge as decision-bridge
+    participant Model as Ollama + Nimble<br/>(local)
+    You->>Agent: evidence and the allowed answers
+    Agent->>Bridge: tool call decide(state, questions)
+    Bridge->>Bridge: validate the request
+    Bridge->>Model: POST /v1/systemone
+    Model-->>Bridge: probabilities
+    Bridge->>Bridge: validate the response against your questions
+    Bridge-->>Agent: typed result (advisory)
+    Agent-->>You: category and probabilities, nothing executed
 ```
 
 - **You (or the agent) supply the evidence and the allowed answers.** The bridge does not guess what to classify.
@@ -15,6 +26,21 @@ your agent (Claude Code, Codex, ...)  --calls tool "decide"-->  decision-bridge 
 - **The agent chooses when to call it.** Installing the MCP does not intercept prompts or change which model your agent runs.
 
 ## Setup at a glance
+
+```mermaid
+flowchart TD
+    a["Install Ollama and start it"] --> b["ollama pull nimble:latest<br/>(you run this)"]
+    b --> c["uv tool install ."]
+    c --> d["decision-bridge doctor --smoke-test"]
+    d --> e{"Result: ready?"}
+    e -- no --> f["See troubleshooting.md"] --> d
+    e -- yes --> g["which decision-bridge<br/>(keep the absolute path)"]
+    g --> h["Register it in your client<br/>Claude Code, Codex, ..."]
+    h --> i["Start a NEW agent session"]
+    i --> j{"decide and bridge_status<br/>listed?"}
+    j -- no --> f
+    j -- yes --> k["Ask your first question"]
+```
 
 1. Have Ollama running and the model installed (`ollama pull nimble:latest`, done by you).
 2. Install the bridge from a source download (details in [installation](installation.md)):
@@ -101,11 +127,28 @@ For everyday use, add the block from [agent-usage.md](agent-usage.md) to your ag
 | Ask a yes/no-style question | `noul` | You get a **probability**, not a boolean. Pick your own cut-off in your own code. |
 | Rate something on an ordered scale | `score` | List levels **lowest first**. You get a number from 0 to levels-1, plus per-level probabilities. |
 
+```mermaid
+flowchart TD
+    q{"What do you need?"} -->|"Pick one of several options"| choice["choice<br/>returns the option and a probability for each<br/>always include an unknown option"]
+    q -->|"A yes/no-style question"| noul["noul<br/>returns a probability, not a verdict<br/>you choose the cut-off"]
+    q -->|"Rate on an ordered scale"| score["score<br/>list levels lowest first<br/>returns a number from 0 to levels minus 1"]
+```
+
 - Ask several independent questions about the same evidence in **one** call (up to 64).
 - Send the relevant excerpt, not the repository. The model has roughly an 8K-token prompt budget and nothing is truncated for you.
 - Use the real evidence: a paraphrase changes the answer.
 
 ### Reading results sensibly
+
+```mermaid
+flowchart TD
+    r["Tool result"] --> err{"Error?"}
+    err -- yes --> say["Say so and continue with normal analysis<br/>never invent a decision"]
+    err -- no --> p["Probabilities and scores<br/>passed through exactly as Ollama returned them"]
+    p --> th{"Meets YOUR acceptance threshold?<br/>(tested on your own data)"}
+    th -- yes --> adv["Use it as advice<br/>approvals, tests and checks still apply"]
+    th -- no --> normal["Fall back to normal analysis"]
+```
 
 - **`confidence` is concentration, not correctness.** A confident answer can still be wrong.
 - **Set an acceptance threshold in the consumer and test it.** For example, an automation might act only when a `noul` is at least 0.9 or at most 0.1 and otherwise fall back to normal analysis. That is an illustration, not a recommendation: measure on your own data first ([evaluation](evaluation.md)).
@@ -161,6 +204,22 @@ decision-bridge doctor --smoke-test  # also sends one tiny real request (may loa
 ```
 
 `doctor` without `--smoke-test` says explicitly that inference readiness is unverified.
+
+```mermaid
+sequenceDiagram
+    participant D as decision-bridge doctor
+    participant O as Ollama
+    D->>D: validate configuration
+    D->>O: GET /api/version
+    O-->>D: version (needs 0.35 or newer)
+    D->>O: GET /api/tags
+    O-->>D: installed models (installed, local, decision-capable?)
+    opt only with --smoke-test
+        D->>O: POST /v1/systemone (one tiny synthetic request)
+        O-->>D: a valid decision, or an error code
+    end
+    Note over D,O: without --smoke-test no inference runs, so readiness stays unverified
+```
 
 ## Real examples
 

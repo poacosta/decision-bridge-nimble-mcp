@@ -8,9 +8,19 @@ A small MCP server and CLI that lets any stdio MCP client ask a local Nimble mod
 
 You supply the evidence and the allowed answers. Decision Bridge validates the request, sends it to Ollama's dedicated Nimble decision endpoint (`POST /v1/systemone`), validates the response against your questions, and returns typed results. Your calling application decides what, if anything, to do next.
 
-```text
-MCP client (agent)  --stdio-->  decision-bridge serve  --HTTP-->  Ollama  -->  Nimble model
-                                (validates in and out)         (127.0.0.1:11434)
+```mermaid
+flowchart LR
+    agent["MCP client<br/>(Claude Code, Codex, ...)"] -->|"stdio: MCP messages"| server
+    term["Terminal or script"] -->|"decision-bridge decide"| cli
+    subgraph bridge["decision-bridge (one local process)"]
+        server["MCP server<br/>decide, bridge_status"]
+        cli["CLI<br/>doctor, decide"]
+        service["Decision service<br/>validates the request and the response"]
+        server --> service
+        cli --> service
+    end
+    service -->|"HTTP: POST /v1/systemone"| ollama["Ollama<br/>127.0.0.1:11434 by default"]
+    ollama --> nimble["Nimble model<br/>installed locally"]
 ```
 
 The MCP client starts `decision-bridge serve`; Ollama's API address is **not** an MCP server URL.

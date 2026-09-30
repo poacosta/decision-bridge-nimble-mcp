@@ -2,6 +2,22 @@
 
 Start with `decision-bridge doctor`. Add `--smoke-test` to confirm a real decision works.
 
+```mermaid
+flowchart TD
+    d["decision-bridge doctor --smoke-test"] --> a{"Ollama reachable?"}
+    a -- no --> a1["Start Ollama, or fix DECISION_BRIDGE_OLLAMA_URL"]
+    a -- yes --> b{"Ollama 0.35 or newer?"}
+    b -- no --> b1["Upgrade Ollama"]
+    b -- yes --> c{"Model installed?"}
+    c -- no --> c1["ollama pull nimble:latest"]
+    c -- yes --> e{"Local and decision-capable?"}
+    e -- no --> e1["Select an installed local Nimble model"]
+    e -- yes --> s{"Smoke test passed?"}
+    s -- no --> s1["Read the error code in the tables below"]
+    s -- yes --> cl["The bridge is fine.<br/>Client problems: absolute path, new session, client logs"]
+```
+
+
 ## Setup problems
 
 | Symptom | Likely cause | Next step |

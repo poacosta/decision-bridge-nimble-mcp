@@ -2,6 +2,14 @@
 
 Precedence: explicit CLI option, then environment variable, then default. There is no implicit `.env` loading from the working directory. Values are validated at startup; a bad value exits with code 2 and `INVALID_CONFIGURATION`.
 
+```mermaid
+flowchart LR
+    a{"CLI option given?"} -- yes --> u1["use it"]
+    a -- no --> b{"DECISION_BRIDGE_* variable set?"}
+    b -- yes --> u2["use it"]
+    b -- no --> u3["use the default"]
+```
+
 | Variable | CLI option | Default | Meaning |
 |---|---|---|---|
 | `DECISION_BRIDGE_OLLAMA_URL` | `--ollama-url` | `http://127.0.0.1:11434` | Operator-configured Ollama origin |
@@ -16,6 +24,17 @@ Precedence: explicit CLI option, then environment variable, then default. There 
 These are this project's defaults, not claims about upstream defaults.
 
 ## Endpoint rules
+
+```mermaid
+flowchart TD
+    u["DECISION_BRIDGE_OLLAMA_URL"] --> f{"http or https origin, with no<br/>credentials, path, query or fragment?"}
+    f -- no --> bad["INVALID_CONFIGURATION"]
+    f -- yes --> l{"Loopback?<br/>localhost, 127.x.x.x, ::1"}
+    l -- yes --> ok["accepted"]
+    l -- no --> r{"DECISION_BRIDGE_ALLOW_REMOTE<br/>is true?"}
+    r -- yes --> ok2["accepted<br/>no authentication, TLS or trust is added"]
+    r -- no --> bad
+```
 
 - The origin must be `http` or `https` with no credentials, query, fragment, or path prefix.
 - Loopback is accepted by default: `localhost`, `127.0.0.0/8` addresses, and `[::1]`. Anything else is refused unless `DECISION_BRIDGE_ALLOW_REMOTE=true`.
