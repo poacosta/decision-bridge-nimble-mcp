@@ -49,7 +49,12 @@ Works today, before any registry release.
    ollama pull nimble:latest
    ```
 
-3. Get this repository: download the ZIP and extract it (no Git needed), or clone it.
+3. Get this repository: [download the ZIP](https://github.com/poacosta/decision-bridge-nimble-mcp/archive/refs/heads/main.zip) and extract it (no Git needed), or clone it:
+
+   ```sh
+   git clone https://github.com/poacosta/decision-bridge-nimble-mcp.git
+   cd decision-bridge-nimble-mcp
+   ```
 4. In the project directory:
 
    ```sh
@@ -194,7 +199,7 @@ uv run decision-bridge doctor
 uv run pytest
 ```
 
-Contributor guide: [CONTRIBUTING.md](CONTRIBUTING.md). Security: [SECURITY.md](SECURITY.md). Changes: [CHANGELOG.md](CHANGELOG.md).
+Contributor guide: [CONTRIBUTING.md](CONTRIBUTING.md). Please follow the [Code of Conduct](CODE_OF_CONDUCT.md). Security: [SECURITY.md](SECURITY.md). Changes: [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

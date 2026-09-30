@@ -18,6 +18,7 @@ from mcp import Client, StdioServerParameters
 pytestmark = pytest.mark.packaging
 
 ROOT = Path(__file__).resolve().parent.parent.parent
+REPO_URL = "https://github.com/poacosta/decision-bridge-nimble-mcp"
 FORBIDDEN = (
     ".env",
     ".venv",
@@ -94,7 +95,13 @@ def test_wheel_contents_and_metadata(wheel):
         assert dep in requires
     for banned in ("torch", "transformers", "mlx", "cuda"):
         assert banned not in requires.lower()
-    assert meta.get_all("Project-URL") is None  # no invented ownership URLs
+    project_urls = dict(u.split(", ", 1) for u in meta.get_all("Project-URL") or [])
+    assert set(project_urls) == {"Homepage", "Source", "Issues", "Changelog"}
+    assert all(url.startswith(REPO_URL) for url in project_urls.values())
+    assert meta["License-Expression"] == "MIT"  # an SPDX expression, not a License :: classifier
+    classifiers = meta.get_all("Classifier") or []
+    assert "Development Status :: 3 - Alpha" in classifiers
+    assert not [c for c in classifiers if c.startswith("License ::")]
     # The owner's MIT license ships with the wheel, and it is the repository's own file.
     assert meta.get_all("License-File") == ["LICENSE"]
     with zipfile.ZipFile(wheel) as zf:
@@ -102,6 +109,17 @@ def test_wheel_contents_and_metadata(wheel):
         # Compare bytes: a Windows checkout may convert the file to CRLF, and the wheel carries
         # the file exactly as checked out. Text mode would hide that and compare the wrong thing.
         assert zf.read(shipped) == (ROOT / "LICENSE").read_bytes()
+
+
+def test_classifiers_are_valid_trove_classifiers(wheel):
+    from trove_classifiers import classifiers as valid
+
+    with zipfile.ZipFile(wheel) as zf:
+        meta_name = next(n for n in zf.namelist() if n.endswith(".dist-info/METADATA"))
+        meta = email.message_from_string(zf.read(meta_name).decode())
+    declared = meta.get_all("Classifier") or []
+    assert declared
+    assert [c for c in declared if c not in valid] == []  # PyPI rejects unknown classifiers
 
 
 def test_sdist_contents(sdist):

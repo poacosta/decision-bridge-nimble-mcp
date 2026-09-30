@@ -1,0 +1,2 @@
+# Normalize line endings so every checkout (including Windows) sees the same bytes.
+* text=auto eol=lf

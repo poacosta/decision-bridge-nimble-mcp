@@ -11,7 +11,7 @@ ollama pull nimble:latest
 ## Path A: from a source download (works today)
 
 1. Install `uv`: <https://docs.astral.sh/uv/getting-started/installation/>.
-2. Download the repository ZIP and extract it (Git is not required), or clone the repository.
+2. Download the [repository ZIP](https://github.com/poacosta/decision-bridge-nimble-mcp/archive/refs/heads/main.zip) and extract it (Git is not required), or clone it: `git clone https://github.com/poacosta/decision-bridge-nimble-mcp.git`.
 3. In the extracted directory:
 
    ```sh

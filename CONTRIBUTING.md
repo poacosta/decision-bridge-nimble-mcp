@@ -1,5 +1,7 @@
 # Contributing
 
+Please read the [Code of Conduct](CODE_OF_CONDUCT.md). Bug reports and feature requests use the issue forms; for bugs, include the output of `decision-bridge doctor --json` and never paste private evidence.
+
 ## Setup
 
 ```sh

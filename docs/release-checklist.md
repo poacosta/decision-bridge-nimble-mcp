@@ -16,8 +16,8 @@ Reported as separate states. Nothing below has been pushed, published, or releas
 ## Blocking decisions (owner)
 
 - [x] **License**: MIT, added by the owner as `LICENSE` and shipped in the wheel and sdist (a packaging test asserts it).
-- [ ] **License metadata**: add the matching `license` field (SPDX `MIT`) to `pyproject.toml` so registries show it; the `LICENSE` file alone is not declared in the package metadata's license field.
-- [ ] **Repository identity**: real repository URL and owner. No URL, username, or project links are currently in package metadata or docs.
+- [x] **License metadata**: `license = "MIT"` (SPDX) and `license-files` are in `pyproject.toml`; a packaging test asserts them.
+- [x] **Repository identity**: `https://github.com/poacosta/decision-bridge-nimble-mcp` is in the package metadata and docs. It is **private** as of 2026-10-01 (unauthenticated requests get 404); make it public before anyone else is pointed at the clone/ZIP links.
 - [ ] **Package name**: confirm `decision-bridge-nimble-mcp` is available and desired on the registry.
 - [ ] **Security contact**: an owner-approved private contact or an enabled private advisory mechanism, then update `SECURITY.md`.
 - [ ] **Explicit permission to publish** a release and/or package.
@@ -25,13 +25,15 @@ Reported as separate states. Nothing below has been pushed, published, or releas
 ## Before tagging
 
 - [ ] All required checks pass on a clean checkout: `uv sync --locked`, `uv run ruff check .`, `uv run ruff format --check .`, `uv run mypy`, `uv run pytest`, `uv run pytest -m packaging`.
-- [ ] CI green on macOS, Linux, and Windows for every Python in the matrix. Pin third-party GitHub Actions by commit SHA after reviewing them.
+- [ ] CI green on macOS, Linux, and Windows for every Python in the matrix. Actions are pinned by commit SHA (`actions/checkout` v4.4.0, `astral-sh/setup-uv` v5.4.2) and Dependabot proposes updates; review those PRs before merging.
 - [ ] Re-verify the MCP SDK behavior the server relies on (the middleware hook is documented as subject to change in a 2.x minor release) and that `uv.lock` is current.
 - [ ] Re-check the Nimble/Ollama contract at [ollama.com/library/nimble](https://ollama.com/library/nimble:latest) and record the Ollama version and model digest used for live verification. `latest` can change.
 - [ ] Run live tests and the evaluation script on a machine with the model (`DECISION_BRIDGE_LIVE=1 uv run pytest -m live`).
 - [ ] Try at least one real MCP client end to end, and update the status table in [clients](clients.md) only with what was actually run.
 - [ ] Update `CHANGELOG.md`, confirm the version in `src/decision_bridge/__init__.py`, and inspect the built wheel and sdist contents (the packaging tests assert no `.env`, caches, or weights).
 - [ ] Confirm docs contain no unverified claims, fake badges, or invented benchmark figures.
+- [ ] The README is also the package's long description, and PyPI does not resolve relative links or render Mermaid. Before publishing, switch the README's relative links to absolute URLs and check how the page looks (for example with `twine check` and a TestPyPI upload).
+- [ ] GitHub settings (only the owner can set these): private vulnerability reporting, branch protection requiring CI on `main`, repository description and topics; then update `SECURITY.md` and `CODE_OF_CONDUCT.md` with the private contact.
 
 ## Publishing (only if authorized)
 
