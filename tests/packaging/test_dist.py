@@ -99,7 +99,9 @@ def test_wheel_contents_and_metadata(wheel):
     assert meta.get_all("License-File") == ["LICENSE"]
     with zipfile.ZipFile(wheel) as zf:
         shipped = next(n for n in zf.namelist() if n.endswith("licenses/LICENSE"))
-        assert zf.read(shipped).decode() == (ROOT / "LICENSE").read_text(encoding="utf-8")
+        # Compare bytes: a Windows checkout may convert the file to CRLF, and the wheel carries
+        # the file exactly as checked out. Text mode would hide that and compare the wrong thing.
+        assert zf.read(shipped) == (ROOT / "LICENSE").read_bytes()
 
 
 def test_sdist_contents(sdist):
