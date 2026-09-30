@@ -1,0 +1,18 @@
+{
+  "state": {
+    "task": "Fix the date formatting bug in the invoice export.",
+    "candidate_context": "src/invoices/export.py: def format_invoice_date(value): return value.strftime('%d/%m/%Y')"
+  },
+  "questions": {
+    "relevance": {
+      "type": "score",
+      "instructions": "Rate how relevant the candidate context is to the task.",
+      "criteria": [
+        "Unrelated to the task.",
+        "Loosely related; unlikely to help.",
+        "Related and probably useful.",
+        "Directly about the code the task must change."
+      ]
+    }
+  }
+}

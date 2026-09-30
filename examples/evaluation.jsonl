@@ -1,0 +1,12 @@
+{"id": "rename-helper", "state": "Rename the helper fmt_date to format_date everywhere.", "labels": {"route": "routine", "mentions_payment": false, "evidence_detail": 0}}
+{"id": "card-declined", "state": "Customers report payment failures at checkout since yesterday's deploy. Error: card_declined 402 for all Visa cards. Steps: add item, pay with Visa, it fails every time.", "labels": {"route": "investigate", "mentions_payment": true, "evidence_detail": 2}}
+{"id": "vague-app", "state": "Something seems off with the app.", "labels": {"route": "unknown", "mentions_payment": false, "evidence_detail": 0}}
+{"id": "bump-version", "state": "Bump the version in package.json from 1.2.3 to 1.2.4.", "labels": {"route": "routine", "mentions_payment": false, "evidence_detail": 0}}
+{"id": "empty-export", "state": "The nightly export sometimes produces an empty file. It happened on Tuesday and Friday; logs show a timeout to the storage service at 02:14.", "labels": {"route": "investigate", "mentions_payment": false, "evidence_detail": 1}}
+{"id": "double-refund", "state": "A refund was charged twice. Order 8841, refund clicked once, two payment entries in the ledger at 10:02 and 10:03.", "labels": {"route": "investigate", "mentions_payment": true, "evidence_detail": 2}}
+{"id": "copyright-year", "state": "Update the copyright year in the footer.", "labels": {"route": "routine", "mentions_payment": false, "evidence_detail": 0}}
+{"id": "slow-page", "state": "Users say the page is slow.", "labels": {"route": "unknown", "mentions_payment": false, "evidence_detail": 0}}
+{"id": "readme-typo", "state": "Fix a typo in the README: 'recieve' should be 'receive'.", "labels": {"route": "routine", "mentions_payment": false, "evidence_detail": 0}}
+{"id": "plus-login", "state": "Login fails for users with a plus sign in their email address. Repro: sign up as a+b@example.com, log out, log in: 'invalid credentials'.", "labels": {"route": "investigate", "mentions_payment": false, "evidence_detail": 2}}
+{"id": "chf-symbol", "state": "The invoice PDF shows the wrong currency symbol for payments in CHF. Example: invoice 2291 shows $ instead of CHF.", "labels": {"route": "investigate", "mentions_payment": true, "evidence_detail": 1}}
+{"id": "look-at-this", "state": "Please look at this.", "labels": {"route": "unknown", "mentions_payment": false, "evidence_detail": 0}}
