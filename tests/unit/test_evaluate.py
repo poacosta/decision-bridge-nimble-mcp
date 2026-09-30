@@ -6,6 +6,8 @@ from pathlib import Path
 
 import pytest
 
+from tests.helpers import subprocess_env
+
 ROOT = Path(__file__).resolve().parent.parent.parent
 spec = importlib.util.spec_from_file_location("evaluate", ROOT / "scripts" / "evaluate.py")
 evaluate = importlib.util.module_from_spec(spec)
@@ -18,7 +20,7 @@ def test_refuses_without_confirm_live():
         capture_output=True,
         text=True,
         timeout=30,
-        env={"DECISION_BRIDGE_OLLAMA_URL": "http://127.0.0.1:9"},
+        env=subprocess_env(DECISION_BRIDGE_OLLAMA_URL="http://127.0.0.1:9"),
     )
     assert proc.returncode == 2 and "--confirm-live" in proc.stderr
 

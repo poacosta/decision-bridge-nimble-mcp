@@ -2,7 +2,7 @@
 
 A small MCP server and CLI that lets any stdio MCP client ask a local Nimble model, running through Ollama, for typed decisions.
 
-> Status: pre-release (0.1.0). Not published to any package registry, and no license has been selected yet. See [docs/release-checklist.md](docs/release-checklist.md).
+> Status: pre-release (0.1.0). Not published to any package registry. See [docs/release-checklist.md](docs/release-checklist.md).
 
 ## What it does
 
@@ -198,7 +198,7 @@ Contributor guide: [CONTRIBUTING.md](CONTRIBUTING.md). Security: [SECURITY.md](S
 
 ## License
 
-No license has been selected yet; until one is added, no rights are granted beyond what applicable law provides. The bridge does not redistribute model weights. Ollama, the Nimble model, and this project's Python dependencies each have their own licenses and upstream owners.
+Released under the [MIT License](LICENSE). The bridge does not redistribute model weights. Ollama, the Nimble model, and this project's Python dependencies each have their own licenses and upstream owners.
 
 ## Upstream references
 

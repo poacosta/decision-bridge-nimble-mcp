@@ -46,6 +46,7 @@ flowchart TD
 - **Tools do not appear:** run `decision-bridge serve` in a terminal. It should print nothing and wait for input (press Ctrl+D or Ctrl+C to exit). Then check the client's MCP log for the launch error.
 - **"command not found" / spawn ENOENT:** use an absolute path. Desktop apps often do not inherit your terminal `PATH` ([finding the executable](installation.md#finding-the-executable)).
 - **Windows JSON errors:** escape backslashes in paths (`C:\\Users\\...`).
+- **Windows: `WinError 10106` or the server exits immediately:** Python cannot start `asyncio` if the `SYSTEMROOT` environment variable is missing. This happens when a launcher replaces the whole environment instead of adding to it. Keep `SYSTEMROOT` (and `TEMP`) in any `env` you pass. Clients built on the MCP SDK inherit them automatically.
 - **Agent or bridge in a container or another machine:** `localhost` there is not the Ollama host. Set the URL and `DECISION_BRIDGE_ALLOW_REMOTE=true`, and make Ollama listen on that interface ([Ollama FAQ](https://docs.ollama.com/faq)).
 - **Stdout pollution:** the bridge never writes to stdout while serving. If a client reports invalid JSON-RPC, check that nothing else (a wrapper script, a shell profile that prints) writes to the launch command's stdout.
 

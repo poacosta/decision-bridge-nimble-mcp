@@ -95,9 +95,11 @@ def test_wheel_contents_and_metadata(wheel):
     for banned in ("torch", "transformers", "mlx", "cuda"):
         assert banned not in requires.lower()
     assert meta.get_all("Project-URL") is None  # no invented ownership URLs
-    assert meta.get("License") is None and not meta.get_all(
-        "License-File"
-    )  # owner decision pending
+    # The owner's MIT license ships with the wheel, and it is the repository's own file.
+    assert meta.get_all("License-File") == ["LICENSE"]
+    with zipfile.ZipFile(wheel) as zf:
+        shipped = next(n for n in zf.namelist() if n.endswith("licenses/LICENSE"))
+        assert zf.read(shipped).decode() == (ROOT / "LICENSE").read_text(encoding="utf-8")
 
 
 def test_sdist_contents(sdist):
@@ -110,6 +112,7 @@ def test_sdist_contents(sdist):
         "README.md",
         "examples/mixed-questions.json",
         "src/decision_bridge/cli.py",
+        "LICENSE",
     ):
         assert expected in joined
 

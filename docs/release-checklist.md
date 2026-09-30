@@ -15,7 +15,8 @@ Reported as separate states. Nothing below has been pushed, published, or releas
 
 ## Blocking decisions (owner)
 
-- [ ] **License**: none selected. MIT is recommended for the original bridge code, but this is the owner's decision. Add `LICENSE` and the `license` metadata in `pyproject.toml`. Public source alone is not an open-source license.
+- [x] **License**: MIT, added by the owner as `LICENSE` and shipped in the wheel and sdist (a packaging test asserts it).
+- [ ] **License metadata**: add the matching `license` field (SPDX `MIT`) to `pyproject.toml` so registries show it; the `LICENSE` file alone is not declared in the package metadata's license field.
 - [ ] **Repository identity**: real repository URL and owner. No URL, username, or project links are currently in package metadata or docs.
 - [ ] **Package name**: confirm `decision-bridge-nimble-mcp` is available and desired on the registry.
 - [ ] **Security contact**: an owner-approved private contact or an enabled private advisory mechanism, then update `SECURITY.md`.

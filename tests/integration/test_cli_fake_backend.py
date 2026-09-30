@@ -9,6 +9,7 @@ import pytest
 
 from decision_bridge.cli import MAX_INPUT_BYTES, main
 from tests.fakes.fake_ollama import FakeResponse
+from tests.helpers import subprocess_env
 
 REQ = {
     "state": "Please look into the failing payment.",
@@ -181,7 +182,7 @@ def test_doctor_bad_config_exit_2(capsys, monkeypatch):
 
 
 def test_help_and_version_work_offline_and_fast(monkeypatch):
-    env = {"DECISION_BRIDGE_OLLAMA_URL": "http://127.0.0.1:9", "PATH": ""}
+    env = subprocess_env(DECISION_BRIDGE_OLLAMA_URL="http://127.0.0.1:9", PATH="")
     for args in (["--help"], ["--version"], ["doctor", "--help"], ["decide", "--help"]):
         started = time.monotonic()
         proc = subprocess.run(

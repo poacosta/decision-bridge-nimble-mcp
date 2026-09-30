@@ -8,5 +8,5 @@ Decision Bridge: a small Python MCP server and CLI that send typed decision requ
 - Never download models or start/stop/configure Ollama. Never edit a user's global MCP configuration.
 - stdout is protocol-only while serving. Never log prompts, evidence, answers, or raw upstream error bodies.
 - Do not silently truncate input, retry inference, round upstream numbers, or accept invalid upstream answers.
-- Do not push, publish, or open pull requests without explicit permission. The license and security contact are owner decisions (see `docs/release-checklist.md`).
+- Do not push, publish, or open pull requests without explicit permission. The security contact and repository identity are owner decisions (see `docs/release-checklist.md`).
 - Commits: plain, human-voiced messages; no assistant/model attribution or co-author trailers.

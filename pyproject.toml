@@ -43,7 +43,7 @@ path = "src/decision_bridge/__init__.py"
 packages = ["src/decision_bridge"]
 
 [tool.hatch.build.targets.sdist]
-include = ["/src", "/tests", "/examples", "/docs", "/scripts", "/README.md", "/CHANGELOG.md", "/CONTRIBUTING.md", "/SECURITY.md", "/AGENTS.md", "/pyproject.toml", "/uv.lock"]
+include = ["/src", "/tests", "/examples", "/docs", "/scripts", "/README.md", "/CHANGELOG.md", "/CONTRIBUTING.md", "/SECURITY.md", "/AGENTS.md", "/pyproject.toml", "/uv.lock", "/LICENSE"]
 exclude = ["/docs/superpowers", "/.superpowers"]
 
 [tool.ruff]

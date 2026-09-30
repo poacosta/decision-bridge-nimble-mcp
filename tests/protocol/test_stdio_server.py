@@ -15,6 +15,7 @@ import pytest
 from mcp import Client, StdioServerParameters
 
 from tests.fakes.fake_ollama import FakeResponse, default_decision
+from tests.helpers import subprocess_env
 
 pytestmark = pytest.mark.filterwarnings("ignore")
 
@@ -181,7 +182,7 @@ def raw_server(tmp_path, url):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=tmp_path,
-        env={"DECISION_BRIDGE_OLLAMA_URL": url},
+        env=subprocess_env(DECISION_BRIDGE_OLLAMA_URL=url),
     )
 
 
@@ -264,10 +265,10 @@ def test_verbose_server_logs_never_contain_evidence_or_answers(tmp_path, fake_ol
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         cwd=tmp_path,
-        env={
-            "DECISION_BRIDGE_OLLAMA_URL": fake_ollama.url,
-            "DECISION_BRIDGE_LOG_LEVEL": level,
-        },
+        env=subprocess_env(
+            DECISION_BRIDGE_OLLAMA_URL=fake_ollama.url,
+            DECISION_BRIDGE_LOG_LEVEL=level,
+        ),
     )
     try:
         for message in (
