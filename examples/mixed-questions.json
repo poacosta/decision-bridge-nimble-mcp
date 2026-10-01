@@ -1,0 +1,29 @@
+{
+  "state": {
+    "request": "Investigate a payment failure reported by a customer."
+  },
+  "questions": {
+    "route": {
+      "type": "choice",
+      "instructions": "Select the most appropriate handling category.",
+      "criteria": {
+        "routine": "A known mechanical task with no behavior change.",
+        "investigate": "A problem requiring investigation.",
+        "unknown": "The evidence is insufficient to choose."
+      }
+    },
+    "mentions_payment": {
+      "type": "noul",
+      "instructions": "Does the request explicitly mention a payment problem?"
+    },
+    "evidence_detail": {
+      "type": "score",
+      "instructions": "Rate the amount of diagnostic detail provided.",
+      "criteria": [
+        "A general report without reproduction details.",
+        "Some concrete diagnostic details.",
+        "Clear reproduction steps and supporting evidence."
+      ]
+    }
+  }
+}

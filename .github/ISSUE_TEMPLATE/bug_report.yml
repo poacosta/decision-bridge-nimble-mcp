@@ -1,0 +1,80 @@
+name: Bug report
+description: Something does not work as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please run `decision-bridge doctor` first and check the
+        [troubleshooting guide](https://github.com/poacosta/decision-bridge-nimble-mcp/blob/main/docs/troubleshooting.md).
+
+        **Do not paste private evidence, API keys, or personal data.** Use a small synthetic example instead.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: What did you do, and what went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: A minimal request (synthetic data only) and the command or client action that triggers it.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `decision-bridge doctor --json`
+      description: Add `--smoke-test` if the problem involves a real decision. Remove anything private.
+      render: json
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: "`decision-bridge --version`, Ollama version, and the model digest (the ID column of `ollama list`)."
+      placeholder: "decision-bridge 0.1.0, Ollama 0.35.0, nimble:latest 24e550a16a70"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - macOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: client
+    attributes:
+      label: How are you using it?
+      options:
+        - Command line only
+        - Claude Code
+        - Codex
+        - Claude Desktop
+        - Cursor
+        - Antigravity
+        - Another MCP client
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed private evidence, keys, and personal data from this report.
+          required: true

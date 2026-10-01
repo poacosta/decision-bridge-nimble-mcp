@@ -1,0 +1,15 @@
+{
+  "state": "Rename the internal helper `fmt_date` to `format_date` across the codebase and update the imports.",
+  "questions": {
+    "route": {
+      "type": "choice",
+      "instructions": "Select the handling category that best fits the request.",
+      "criteria": {
+        "routine": "A known mechanical task with no behavior change.",
+        "investigate": "A problem that needs investigation before any change.",
+        "design": "A change that needs design decisions first.",
+        "unknown": "The evidence is insufficient to choose."
+      }
+    }
+  }
+}

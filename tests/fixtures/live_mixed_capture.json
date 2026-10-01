@@ -1,0 +1,68 @@
+{
+  "captured": "2026-09-30, Ollama 0.35.0, nimble:latest digest 24e550a16a70, synthetic input",
+  "request": {
+    "state": "Please investigate why payments fail for a customer.",
+    "questions": {
+      "route": {
+        "type": "choice",
+        "instructions": "Pick the handling category.",
+        "criteria": {
+          "routine": "Known mechanical task.",
+          "investigate": "Needs investigation.",
+          "unknown": "Not enough evidence."
+        }
+      },
+      "mentions_payment": {
+        "type": "noul",
+        "instructions": "Does the text mention payments?"
+      },
+      "detail": {
+        "type": "score",
+        "instructions": "Rate diagnostic detail.",
+        "criteria": [
+          "None",
+          "Some",
+          "Full"
+        ]
+      }
+    }
+  },
+  "response": {
+    "model": "nimble:latest",
+    "answers": {
+      "route": {
+        "type": "choice",
+        "choice": "investigate",
+        "probabilities": {
+          "routine": 0.007885658447031742,
+          "investigate": 0.98165653665675,
+          "unknown": 0.0104578048962183
+        },
+        "confidence": 0.9052859849948087
+      },
+      "mentions_payment": {
+        "type": "noul",
+        "noul": 0.9984799915604214
+      },
+      "detail": {
+        "type": "score",
+        "score": 1.0425619366824663,
+        "legend": {
+          "0": "None",
+          "1": "Some",
+          "2": "Full"
+        },
+        "probabilities": {
+          "0": 0.10083112557838805,
+          "1": 0.7557758121607576,
+          "2": 0.1433930622608543
+        },
+        "confidence": 0.3433025165989103
+      }
+    },
+    "usage": {
+      "input_tokens": 784,
+      "output_tokens": 4
+    }
+  }
+}

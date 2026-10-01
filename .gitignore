@@ -1,0 +1,18 @@
+.superpowers/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+.env
+.env.*
+live-report.json
+
+# Internal planning documents stay out of the public repository
+docs/superpowers/
+docs/release-checklist.md
+.private/

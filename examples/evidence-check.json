@@ -1,0 +1,20 @@
+{
+  "state": {
+    "ticket": "Checkout returns HTTP 500 after the customer enters a discount code.",
+    "logs": "2026-09-30T10:12:03Z ERROR checkout: NullPointerException in DiscountService.apply"
+  },
+  "questions": {
+    "mentions_error_code": {
+      "type": "noul",
+      "instructions": "Does the evidence mention a specific HTTP status code or exception?",
+      "criteria": {
+        "true": "A specific status code or exception is named.",
+        "false": "No specific status code or exception is named."
+      }
+    },
+    "involves_discounts": {
+      "type": "noul",
+      "instructions": "Is a discount or coupon involved in the failure?"
+    }
+  }
+}
