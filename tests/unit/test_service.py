@@ -145,7 +145,10 @@ async def test_timeout_while_queued(make_service, fake_ollama):
         service._semaphore.release()
     assert err.code is ErrorCode.TIMEOUT
     assert fake_ollama.calls("/v1/systemone") == []  # the queued call never reached Ollama
-    assert (await service.decide(REQ))["answers"]  # and the service is healthy afterwards
+    # An expired deadline must not leak capacity. Check the state directly: a follow-up call with
+    # the same 0.4 s budget would itself time out on a slow machine and prove nothing.
+    assert service._pending == 0
+    assert not service._semaphore.locked()
 
 
 @pytest.mark.parametrize("limit", [1, 2])

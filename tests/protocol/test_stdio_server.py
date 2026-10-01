@@ -166,11 +166,21 @@ async def test_cancelling_a_call_frees_the_capacity_slot(tmp_path, fake_ollama, 
     fake_ollama.set("POST", "/v1/systemone", FakeResponse(body={"x": 1}, delay=60))
     env = {"DECISION_BRIDGE_MAX_CONCURRENCY": "1"}
     async with connect(tmp_path, fake_ollama.url, **env) as client:
-        with anyio.move_on_after(0.7):
-            await client.call_tool("decide", question_args(mixed_example))
+        async with anyio.create_task_group() as tg:
+
+            async def call():
+                await client.call_tool("decide", question_args(mixed_example))
+
+            tg.start_soon(call)
+            # Cancel only once the request is really in flight, however slow the machine is.
+            with anyio.fail_after(30):
+                # The fake server's thread sets this condition, not an anyio event.
+                while not fake_ollama.calls("/v1/systemone"):  # noqa: ASYNC110
+                    await anyio.sleep(0.05)
+            tg.cancel_scope.cancel()
         assert len(fake_ollama.calls("/v1/systemone")) == 1
         fake_ollama.set("POST", "/v1/systemone", default_decision)
-        with anyio.fail_after(8):  # a leaked slot would leave this waiting for the 120 s deadline
+        with anyio.fail_after(30):  # a leaked slot would leave this waiting for the 120 s deadline
             result = await client.call_tool("decide", question_args(mixed_example))
     assert result.is_error is False
 
