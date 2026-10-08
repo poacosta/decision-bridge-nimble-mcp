@@ -14,9 +14,13 @@ Nothing here is a guarantee. Figures are labelled **observed** (measured on a na
 | Context | about 8K tokens (`num_ctx` 8194) |
 | Ollama | 0.35 or newer |
 
-**Estimated memory while loaded: about 10.5-11.5 GB.** The weights account for about 9.5 GB (8.95 B × 8.5 bits ÷ 8). The context is capped at about 8K tokens, so the cache for it is small by comparison, and Ollama adds some runtime overhead on top. To get good speed, all of this should fit in GPU memory (VRAM, or unified memory on Apple Silicon). Whatever does not fit runs on the CPU, which is much slower.
+**Memory while loaded: plan for at least 12 GB.** Observed: on an Apple M1 Pro with 16 GB, the loaded model used at least 12 GB. The weights alone account for about 9.5 GB (8.95 B × 8.5 bits ÷ 8); the context cache and Ollama's runtime buffers add the rest, which is more than a simple estimate from the weights suggests. To get good speed, all of this should fit in GPU memory (VRAM, or unified memory on Apple Silicon). Whatever does not fit runs on the CPU, which is much slower.
 
 Only one tag is published, and it is Q8_0. A smaller quantization (such as Q4) would need less memory, but no official one exists. This bridge only supports Nimble models that report decision support ([configuration](configuration.md#model-rules)).
+
+### Why Ollama is the lighter route
+
+Upstream, Nimble is published on [Hugging Face](https://huggingface.co/bespokelabs/Bespoke-Nimble-9B) as a LoRA adapter (about 173 MB) for the `Qwen/Qwen3.5-9B` base model, in BF16, and is not served there by any inference provider. Running it that way needs the full base model: "the 9B weights alone take about 18 GB" without quantization ([Nimble README](https://github.com/bespokelabsai/nimble)), plus a CUDA GPU with BF16 support or an Apple Silicon Mac. Merging the adapter yourself also needs extra RAM and disk. The Ollama tag ships the model already merged and quantized to Q8_0, which roughly halves the weight memory. Neither Hugging Face nor the Nimble README states a minimum memory or VRAM figure, and the 8,192-token limit is the same everywhere: longer prompts are rejected, not truncated.
 
 ## What "comfortable" means here
 
@@ -37,7 +41,7 @@ Ollama uses the GPU through Metal. Memory is unified, so the model and every ope
 | Unified memory | Expectation |
 |---|---|
 | 8 GB | **Not viable.** The model is larger than total memory. |
-| 16 GB | **Works, tight.** Observed: M1 Pro, 16 GB, warm median about 1.9 s per request ([evaluation](evaluation.md#observations-from-one-run)). macOS lets the GPU use only part of unified memory (roughly two thirds on smaller machines), and this model sits at that edge, so part of it may run on the CPU. Close heavy applications while you use it. |
+| 16 GB | **Works, tight.** Observed: M1 Pro, 16 GB, at least 12 GB in use with the model loaded, warm median about 1.9 s per request ([evaluation](evaluation.md#observations-from-one-run)). That leaves about 4 GB for macOS, the MCP client, an editor, and a browser, so the system may start swapping. Close heavy applications while you use it, and consider `DECISION_BRIDGE_KEEP_ALIVE=0` to release the memory after each call. |
 | 24-32 GB | **Comfortable** (estimated). Room for the model plus an editor, browser, and agent. |
 | 36 GB or more | **Comfortable with headroom** (estimated). |
 
@@ -49,8 +53,8 @@ Ollama supports compute capability 5.0 and newer with driver 550 or newer (5.0-6
 
 | VRAM | Expectation (estimated) |
 |---|---|
-| 16 GB or more (for example RTX 4060 Ti 16 GB, 4070 Ti Super, 4080, 5070 Ti, 3090, 4090) | **Comfortable.** The whole model fits with room to spare. |
-| 12 GB (for example RTX 3060 12 GB, 4070) | **Fits, tight.** Little margin left; a desktop compositor or another GPU application can push part of the model onto the CPU. |
+| 16 GB or more (for example RTX 4060 Ti 16 GB, 4070 Ti Super, 4080, 5070 Ti, 3090, 4090) | **Comfortable.** The whole model fits, with a few GB to spare on 16 GB cards. |
+| 12 GB (for example RTX 3060 12 GB, 4070) | **Borderline.** About the size of the loaded model, with nothing left for the desktop or other GPU applications, so expect part of it to run on the CPU. Check with `ollama ps`. |
 | 8-10 GB | **Partial offload.** Ollama splits the model between GPU and CPU. It works, but expect several times slower responses. Have at least 32 GB of system RAM. |
 | under 8 GB | Effectively CPU-only. |
 
@@ -62,7 +66,7 @@ Linux needs the ROCm v7 driver; Windows needs a ROCm v7 / HIP7-capable driver an
 
 It works, but it is not comfortable for interactive agent use.
 
-- **System RAM:** 16 GB is the bare minimum and leaves almost nothing for other applications. Prefer 32 GB.
+- **System RAM:** the model alone takes at least 12 GB, so 16 GB leaves too little for the operating system and an MCP client. Treat 24 GB as the minimum and prefer 32 GB.
 - **Speed:** expect responses in tens of seconds rather than seconds (estimated, depends heavily on the CPU and the request size). Raise `DECISION_BRIDGE_REQUEST_TIMEOUT_SECONDS` before you start, and keep `DECISION_BRIDGE_MAX_CONCURRENCY` at `1`.
 
 ## Disk
@@ -113,7 +117,7 @@ Keep requests short. Evidence counts toward the ~8K-token budget, and longer pro
 
 | Machine | Runtime | Latency per request | Source |
 |---|---|---|---|
-| Apple M1 Pro, 16 GB | Ollama 0.35.0 | median about 1.9 s, warm | Observed in this project ([evaluation](evaluation.md)) |
+| Apple M1 Pro, 16 GB | Ollama 0.35.0 | median about 1.9 s, warm; at least 12 GB in use | Observed in this project ([evaluation](evaluation.md)) |
 | Apple M5 Pro, 64 GB | Upstream Python/MLX runner | median 444 ms | [Nimble README](https://github.com/bespokelabsai/nimble) |
 | NVIDIA H100 | Upstream Python runner | median 106 ms | [Nimble README](https://github.com/bespokelabsai/nimble) |
 
