@@ -4,15 +4,20 @@ Nimble is a 9-billion-parameter model. It does not run comfortably on every comp
 
 Nothing here is a guarantee. Figures are labelled **observed** (measured on a named machine) or **estimated** (derived from the model's size). The only reliable answer for your machine is to measure it ([below](#check-your-own-machine)).
 
+> **Last checked: 2026-10-09.** Everything on this page reflects the model, Ollama, and the upstream pages as of that date, and any of them can change without notice. If `nimble:latest` has a different digest or size, or Ollama a newer version, re-check before relying on these figures, and update this date when you revise them.
+
 ## What the model needs
+
+From the [model page](https://ollama.com/library/nimble:latest) and `ollama show nimble:latest`:
 
 | | `nimble:latest` |
 |---|---|
-| Parameters | 8.95 B ([model page](https://ollama.com/library/nimble:latest)) |
+| Parameters | 8.95 B |
 | Quantization | Q8_0 (about 8.5 bits per weight) |
 | Download / disk | about 9.5 GB |
 | Context | about 8K tokens (`num_ctx` 8194) |
 | Ollama | 0.35 or newer |
+| Digest tested in this project | `24e550a16a70` |
 
 **Memory while loaded: plan for at least 12 GB.** Observed: on an Apple M1 Pro with 16 GB, the loaded model used at least 12 GB. The weights alone account for about 9.5 GB (8.95 B × 8.5 bits ÷ 8); the context cache and Ollama's runtime buffers add the rest, which is more than a simple estimate from the weights suggests. To get good speed, all of this should fit in GPU memory (VRAM, or unified memory on Apple Silicon). Whatever does not fit runs on the CPU, which is much slower.
 
@@ -41,7 +46,7 @@ Ollama uses the GPU through Metal. Memory is unified, so the model and every ope
 | Unified memory | Expectation |
 |---|---|
 | 8 GB | **Not viable.** The model is larger than total memory. |
-| 16 GB | **Works, tight.** Observed: M1 Pro, 16 GB, at least 12 GB in use with the model loaded, warm median about 1.9 s per request ([evaluation](evaluation.md#observations-from-one-run)). That leaves about 4 GB for macOS, the MCP client, an editor, and a browser, so the system may start swapping. Close heavy applications while you use it, and consider `DECISION_BRIDGE_KEEP_ALIVE=0` to release the memory after each call. |
+| 16 GB | **Works, tight.** Observed on an M1 Pro, 16 GB: at least 12 GB in use with the model loaded, warm median about 1.9 s per request ([evaluation](evaluation.md#observations-from-one-run)). That leaves about 4 GB for macOS, the MCP client, an editor, and a browser, so the system may start swapping. Close heavy applications while you use it, and consider `DECISION_BRIDGE_KEEP_ALIVE=0` to release the memory after each call. |
 | 24-32 GB | **Comfortable** (estimated). Room for the model plus an editor, browser, and agent. |
 | 36 GB or more | **Comfortable with headroom** (estimated). |
 
@@ -123,4 +128,4 @@ Keep requests short. Evidence counts toward the ~8K-token budget, and longer pro
 
 The upstream figures use a different runtime and different requests, so they are not directly comparable to Ollama or to each other. They show the order of magnitude between hardware classes, not what you will get.
 
-If you measure Nimble on hardware not listed here, a report with your machine, Ollama version, model digest, `ollama ps` output, and latency is welcome ([contributing](../CONTRIBUTING.md)).
+If you measure Nimble on hardware not listed here, a dated report with your machine, Ollama version, model digest, `ollama ps` output, and latency is welcome ([contributing](../CONTRIBUTING.md)).
