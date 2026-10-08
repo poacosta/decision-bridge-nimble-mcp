@@ -2,6 +2,8 @@
 
 A small MCP server and CLI that lets any stdio MCP client ask a local Nimble model, running through Ollama, for typed decisions.
 
+[![M8ven Score](https://m8ven.ai/badge/mcp/poacosta-decision-bridge-nimble-mcp-osnsoa?v=383d9bb255eee61b298de14b35f06b61)](https://m8ven.ai/mcp/poacosta-decision-bridge-nimble-mcp-osnsoa?s=readme)
+
 > Status: pre-release (0.1.0). Not published to any package registry.
 
 ## What it does
