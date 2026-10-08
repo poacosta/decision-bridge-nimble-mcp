@@ -32,7 +32,7 @@ Decision Bridge is not an agent, a chat interface, or a classifier for one speci
 ## Prerequisites
 
 - **Ollama 0.35 or newer**, running: <https://ollama.com/download>. Nimble decisions need that version. See the [model page](https://ollama.com/library/nimble:latest) for the current contract.
-- **The Nimble model, installed explicitly by you.** The download is roughly 9.5 GB (see the model page); disk size is not a RAM requirement or a speed guarantee, and this project makes no universal minimum-memory claim. Whether your machine runs it comfortably depends on your hardware.
+- **The Nimble model, installed explicitly by you.** The download is roughly 9.5 GB (see the model page); disk size is not a RAM requirement or a speed guarantee, and this project makes no universal minimum-memory claim. Whether your machine runs it comfortably depends on your hardware: see the [hardware guide](docs/hardware.md) for tiers and how to check yours.
 - **Python 3.11 or newer** and [`uv`](https://docs.astral.sh/uv/getting-started/installation/) (recommended). A pip alternative is in [docs/installation.md](docs/installation.md).
 - An MCP client that can launch a stdio server (only needed for MCP use; the CLI works without one).
 
@@ -179,7 +179,7 @@ Exit codes: `0` success, `2` input or configuration error, `1` unavailable servi
 
 - The model can be wrong. Results are advisory and must not be used to bypass approvals, tests, or checks.
 - Requests are limited to 1-64 questions, 2-26 alternatives per choice/score question, and a 64 KiB request body. The model also has an approximately 8K-token prompt budget; the byte limit does not prove your request fits it, and nothing is truncated for you.
-- Inference can be slow, especially on a cold start or modest hardware. There is no automatic retry, because a timeout does not prove the original computation stopped.
+- Inference can be slow, especially on a cold start or modest hardware ([hardware guide](docs/hardware.md)). There is no automatic retry, because a timeout does not prove the original computation stopped.
 - Only stdio MCP is supported. No hosted inference, cloud fallback, caching, or batch tooling.
 - Only Ollama with a Nimble model that reports decision support is supported.
 

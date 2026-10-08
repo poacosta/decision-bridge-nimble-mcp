@@ -15,5 +15,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/). Not yet released
 - MIT License, with `license`, project URLs, and classifiers in the package metadata.
 - Community files: code of conduct, issue forms, pull request template, and Dependabot configuration. CI actions are pinned by commit SHA.
 - `.gitattributes` to normalize line endings to LF.
+- Hardware guide (`docs/hardware.md`): memory tiers for Apple Silicon, NVIDIA, AMD, and CPU-only machines, and how to check your own.
 - Usage guide (`docs/usage.md`) and client setup for Claude Code, Codex, Claude Desktop, Cursor, and Antigravity.
 - Deterministic, protocol (real subprocess), packaging, and opt-in live tests; a small evaluation script.

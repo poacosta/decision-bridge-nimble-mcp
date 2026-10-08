@@ -34,7 +34,7 @@ flowchart TD
 
 | Symptom | Next step |
 |---|---|
-| `TIMEOUT`, slow first request | The first call may load the model into memory. Try `doctor --smoke-test` once to warm it, raise `DECISION_BRIDGE_REQUEST_TIMEOUT_SECONDS`, or set `DECISION_BRIDGE_KEEP_ALIVE` (for example `30m`) so the model stays loaded. Ollama may keep computing after a timeout |
+| `TIMEOUT`, slow first request | The first call may load the model into memory. Try `doctor --smoke-test` once to warm it, raise `DECISION_BRIDGE_REQUEST_TIMEOUT_SECONDS`, or set `DECISION_BRIDGE_KEEP_ALIVE` (for example `30m`) so the model stays loaded. Ollama may keep computing after a timeout. Consistently slow? Check `ollama ps` and the [hardware guide](hardware.md) |
 | `CONTEXT_LIMIT` | Shorten the evidence or reduce the questions. The 64 KiB body limit does not guarantee the prompt fits the model's ~8K-token budget |
 | `PAYLOAD_TOO_LARGE` | Serialized request over 64 KiB (UTF-8 bytes). Send a smaller excerpt |
 | `BUSY` | More calls than `max_concurrency` plus the small queue. Retry shortly or serialize calls |

@@ -95,7 +95,7 @@ In JSON client configs on Windows, escape backslashes: `"C:\\Users\\you\\.local\
 
 ## Supported platforms
 
-The bridge is pure Python and aims to work on macOS, Linux, and Windows. Continuous integration runs the test suite on Linux, macOS, and Windows against a fake Ollama server; runs with a real model have so far been done on macOS only (see [evaluation](evaluation.md)). Whether Ollama and the Nimble model run acceptably on your hardware is a separate question the bridge cannot answer; see the [model page](https://ollama.com/library/nimble:latest).
+The bridge is pure Python and aims to work on macOS, Linux, and Windows. Continuous integration runs the test suite on Linux, macOS, and Windows against a fake Ollama server; runs with a real model have so far been done on macOS only (see [evaluation](evaluation.md)). Whether Ollama and the Nimble model run acceptably on your hardware is a separate question the bridge cannot answer; see the [hardware guide](hardware.md) and the [model page](https://ollama.com/library/nimble:latest).
 
 ## Docker, remote agents, and `localhost`
 
